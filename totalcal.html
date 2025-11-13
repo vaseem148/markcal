@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marks & Attendance Calculator</title>
+<style>
+  body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 20px;
+    height: 100vh;
+    color: #fff;
+    background: linear-gradient(135deg, #000000, #434343);
+    background-size: 400% 400%;
+    animation: bgMove 10s ease infinite;
+  }
+
+  @keyframes bgMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    animation: fadeIn 1s ease forwards;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+  }
+
+  .container {
+    max-width: 500px;
+    margin: 0 auto;
+    background: rgba(255,255,255,0.08);
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 0 25px rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    animation: fadeUp 1s ease forwards;
+  }
+
+  @keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+  }
+
+  @keyframes fadeUp {
+    from {opacity: 0; transform: translateY(20px);}
+    to {opacity: 1; transform: translateY(0);}
+  }
+
+  label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+    color: #f0f0f0;
+  }
+
+  input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+    font-size: 15px;
+    background: #222;
+    color: #fff;
+    transition: all 0.3s ease;
+  }
+
+  input:focus {
+    box-shadow: 0 0 10px #ffffff, 0 0 20px #888;
+    transform: scale(1.02);
+    background: #333;
+  }
+
+  button {
+    margin-top: 20px;
+    padding: 12px;
+    background: linear-gradient(90deg, #111, #555);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 17px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+  }
+
+  button:hover {
+    background: linear-gradient(90deg, #555, #111);
+    box-shadow: 0 0 15px rgba(255,255,255,0.5);
+    transform: scale(1.05);
+  }
+
+  #result {
+    margin-top: 25px;
+    padding: 15px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 10px;
+    animation: fadeIn 0.8s ease forwards;
+  }
+
+  .bar {
+    height: 14px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 7px;
+    margin-bottom: 10px;
+    overflow: hidden;
+  }
+
+  .bar-fill {
+    height: 100%;
+    width: 0;
+    background: linear-gradient(90deg, #ffffff, #bfbfbf);
+    border-radius: 7px;
+    animation: fillBar 1s forwards;
+  }
+
+  @keyframes fillBar {
+    from { width: 0; }
+    to { width: var(--w); }
+  }
+
+  footer {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 15px;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 0 0 10px #ffffff;
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+
+  @keyframes glow {
+    from { text-shadow: 0 0 10px #fff, 0 0 20px #999; }
+    to { text-shadow: 0 0 20px #fff, 0 0 40px #ccc; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Marks & Attendance Calculator</h1>
+  
+  <label>10th Marks:</label>
+  <input type="number" id="marks10" placeholder="Enter 10th marks">
+
+  <label>10th Max Marks:</label>
+  <input type="number" id="max10" placeholder="Enter total marks">
+
+  <label>12th Marks:</label>
+  <input type="number" id="marks12" placeholder="Enter 12th marks">
+
+  <label>12th Max Marks:</label>
+  <input type="number" id="max12" placeholder="Enter total marks">
+
+  <label>College Marks:</label>
+  <input type="number" id="collegeMarks" placeholder="Enter college marks">
+
+  <label>College Max Marks:</label>
+  <input type="number" id="collegeMax" placeholder="Enter total college marks">
+
+  <label>Attendance Days:</label>
+  <input type="number" id="attendance" placeholder="Enter days attended">
+
+  <label>Total Days:</label>
+  <input type="number" id="totalDays" placeholder="Enter total days">
+
+  <button onclick="calculate()">Calculate</button>
+
+  <div id="result"></div>
+</div>
+
+<footer>🖤 Designed by <span style="color: #bfbfbf;">Mohamed Vaseem</span> 🖤</footer>
+
+<script>
+function calculate() {
+  const getValue = id => parseFloat(document.getElementById(id).value) || 0;
+  const marks10 = getValue('marks10'), max10 = getValue('max10') || 1;
+  const marks12 = getValue('marks12'), max12 = getValue('max12') || 1;
+  const collegeMarks = getValue('collegeMarks'), collegeMax = getValue('collegeMax') || 1;
+  const attendance = getValue('attendance'), totalDays = getValue('totalDays') || 1;
+
+  const perc10 = ((marks10 / max10) * 100).toFixed(2);
+  const perc12 = ((marks12 / max12) * 100).toFixed(2);
+  const percCollege = ((collegeMarks / collegeMax) * 100).toFixed(2);
+  const attendancePerc = ((attendance / totalDays) * 100).toFixed(2);
+
+  const resultDiv = document.getElementById('result');
+  resultDiv.innerHTML = `
+    <strong>10th Percentage:</strong> ${perc10}% 
+    <div class="bar"><div class="bar-fill" style="--w:${perc10}%;"></div></div>
+
+    <strong>12th Percentage:</strong> ${perc12}% 
+    <div class="bar"><div class="bar-fill" style="--w:${perc12}%;"></div></div>
+
+    <strong>College Percentage:</strong> ${percCollege}% 
+    <div class="bar"><div class="bar-fill" style="--w:${percCollege}%;"></div></div>
+
+    <strong>Attendance:</strong> ${attendancePerc}% 
+    <div class="bar"><div class="bar-fill" style="--w:${attendancePerc}%;"></div></div>
+  `;
+}
+</script>
+
+</body>
+</html>
